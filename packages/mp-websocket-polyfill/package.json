@@ -1,6 +1,6 @@
 {
   "name": "mp-websocket-polyfill",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Let WebSocket in WeChat miniprogram to adapt browser's lib.",
   "exports": {
     ".": "./src/index.ts",
