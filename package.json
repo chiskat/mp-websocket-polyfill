@@ -4,7 +4,7 @@
     "mp": "lerna exec --scope sample-mp-taro pnpm run dev",
     "build": "lerna exec --scope mp-websocket-polyfill pnpm run build",
     "preinstall": "npx only-allow pnpm",
-    "version": "lerna version",
+    "version": "lerna version --no-private",
     "publish": "lerna publish from-git -y"
   },
   "workspaces": [
