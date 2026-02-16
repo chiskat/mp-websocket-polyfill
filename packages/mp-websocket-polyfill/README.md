@@ -1,36 +1,18 @@
 # `mp-websocket-polyfill`
 
-适用于微信小程序的垫片，使小程序的 [`SocketTask`](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html) 兼容浏览器端的 [`WebSocket`](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)，这样便可以使用 [`Stomp.js`](https://github.com/stomp-js/stompjs) 等库。
+[![npm](https://img.shields.io/npm/v/mp-websocket-polyfill)](https://www.npmjs.com/package/mp-websocket-polyfill) [![NPM Downloads](https://img.shields.io/npm/dm/mp-websocket-polyfill.svg?style=flat)](https://npmcharts.com/compare/mp-websocket-polyfill?minimal=true)
+
+适用于微信小程序的 Polyfill，使小程序的 [`SocketTask`](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html) 兼容浏览器端的 [`WebSocket`](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)，这样便可以使用 [`Stomp.js`](https://github.com/stomp-js/stompjs) 等库。
 
 # 安装
 
 ```bash
-yarn add mp-websocket-polyfill
-
-# 小程序真机调试，可能会因找不到 TextEncoder、TextDecoder 而报错
-# 所以，推荐安装垫片：
-yarn add fastestsmallesttextencoderdecoder
+npm add mp-websocket-polyfill
 ```
 
 # 使用方式
 
-## 解决真机 `TextEncoder`、`TextDecoder` 找不到问题
-
-安装依赖：
-
-```bash
-yarn add fastestsmallesttextencoderdecoder
-```
-
-然后在入口处：
-
-```typescript
-import 'fastestsmallesttextencoderdecoder'
-```
-
-## 直接使用
-
-原来：
+原先的 WebSocket 用法：
 
 ```typescript
 const socketTask = wx.connectSocket({
@@ -39,10 +21,11 @@ const socketTask = wx.connectSocket({
 })
 ```
 
-替换为：
+改写为：
 
 ```typescript
 import Ws from 'mp-websocket-polyfill'
+import 'mp-websocket-polyfill/text-codec-polyfill'
 
 const webSocket = new Ws({
   url: 'localhost:8080/ws',
@@ -52,7 +35,20 @@ const webSocket = new Ws({
 
 然后这个 `webSocket` 对象便可以在只支持浏览器端 `WebSocket` 的地方使用了。
 
-## 配合 `Stomp.js` 使用
+## 为什么需要 `import 'mp-websocket-polyfill/text-codec-polyfill'`
+
+在微信小程序开发工具中，代码能正常运行；但是，在手机端 “预览” 或 “真机调试” 时，会遇到以下报错：
+
+```
+MiniProgramError
+Can't find variable: TextEncoder
+```
+
+因为微信手机端小程序没有 `TextEncoder` 和 `TextDecoder`，因此需要引入这个 Polyfill。
+
+引入这个 Polyfill 会增加代码包的体积。如果你使用的开发框架或其他库解决了此问题，或是微信小程序后续的更新默认提供了这些 API，那么可以不用导入这个 Polyfill。
+
+## 实际用例：配合 `Stomp.js` 使用
 
 ```typescript
 import { Client } from '@stomp/stompjs'
@@ -75,7 +71,7 @@ client.activate()
 
 注意事项：
 
-- 使用垫片构造的实例，原先小程序自带的 API 例如 `onOpen`、`onClose` 均被屏蔽无法使用，但是可以通过新实例 `.socketTask` 属性获取小程序原生的 `SocketTask` 对象；
+- 使用此 Polyfill 构造的实例，原先小程序自带的 API 例如 `onOpen`、`onClose` 均被屏蔽无法使用，但是可以通过新实例 `.socketTask` 属性获取小程序原生的 `SocketTask` 对象；
 - 如果使用 Stomp，建议参考上面的示例，有时 `protocols` 也要配置正确。
 
 # API

@@ -1,10 +1,9 @@
 import { Client } from '@stomp/stompjs'
 import { Button } from '@tarojs/components'
-// ↓ 下面这行引入垫片库，解决真机运行时 TextEncoder、TextDecoder 的问题，推荐写在项目入口处
-import 'fastestsmallesttextencoderdecoder'
 // ↓ 下面这行引入 mp-websocket-polyfill。
-//   如果小程序真机运行不想开启“将 JS 编译为 ES5”，建议先 pnpm run build，然后把 /src/ 改为 /lib/
-import Ws from 'mp-websocket-polyfill/src/index'
+import Ws from 'mp-websocket-polyfill'
+// ↓ 下面这行引入 polyfill，解决真机运行时 TextEncoder、TextDecoder 的问题，推荐写在项目入口处
+import 'mp-websocket-polyfill/text-codec-polyfill'
 import { useRef } from 'react'
 
 export default function StompPage() {
@@ -39,7 +38,7 @@ export default function StompPage() {
       webSocketFactory() {
         // 注意 ↓ 此处使用 mp-websocket-polyfill
         return new Ws({
-          url: 'ws://localhost:8080/gs-guide-websocket',
+          url: 'ws://localhost:8080/gs-guide-websocket', // ← 真机调试时，可能无法使用 localhost
           timeout: 30000,
           protocols: ['v12.stomp', 'v11.stomp', 'v10.stomp'], // ← 这是 stomp 协议的默认写法，可供参考
         })

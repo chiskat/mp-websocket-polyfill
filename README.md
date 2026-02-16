@@ -26,7 +26,7 @@ VSCode 需提前安装 [Extension Pack for Java](https://marketplace.visualstudi
 
 # `mp-websocket-polyfill` [![npm](https://img.shields.io/npm/v/mp-websocket-polyfill)](https://www.npmjs.com/package/mp-websocket-polyfill)
 
-适用于微信小程序的垫片，使小程序的 [`SocketTask`](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html) 兼容浏览器端的 [`WebSocket`](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)，这样便可以使用 [`Stomp.js`](https://github.com/stomp-js/stompjs) 等库。
+适用于微信小程序的 Polyfill，使小程序的 [`SocketTask`](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html) 兼容浏览器端的 [`WebSocket`](https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket)，这样便可以使用 [`Stomp.js`](https://github.com/stomp-js/stompjs) 等库。
 
 [查看文档](./packages/mp-websocket-polyfill/README.md)
 

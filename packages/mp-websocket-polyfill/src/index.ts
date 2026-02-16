@@ -1,8 +1,7 @@
-export interface IWsConstructorOptions
-  extends IMpWebsocketPolyfillConstructorOptions,
-    WechatMiniprogram.ConnectSocketOption {}
+export interface WsConstructorOptions
+  extends MpWebsocketPolyfillConstructorOptions, WechatMiniprogram.ConnectSocketOption {}
 
-interface IMpWebsocketPolyfillConstructorOptions {
+interface MpWebsocketPolyfillConstructorOptions {
   /**
    * 是否修复 iOS 微信接收到 Stomp 消息时可能因遗漏末尾 0x00 字符而导致解析失败的问题，默认 `true`
    *
@@ -12,7 +11,7 @@ interface IMpWebsocketPolyfillConstructorOptions {
   fixIOSWechat0x00Issue?: boolean
 }
 
-const defaultWsConstructorOptions: IMpWebsocketPolyfillConstructorOptions = {
+const defaultWsConstructorOptions: MpWebsocketPolyfillConstructorOptions = {
   fixIOSWechat0x00Issue: true,
 }
 
@@ -27,9 +26,9 @@ export default class Ws {
   public onerror?: Function
   public onmessage?: Function
 
-  protected _options: IMpWebsocketPolyfillConstructorOptions
+  protected _options: MpWebsocketPolyfillConstructorOptions
 
-  constructor(options: IWsConstructorOptions) {
+  constructor(options: WsConstructorOptions) {
     this._options = { ...defaultWsConstructorOptions, ...options }
     this.readyState = 0
     this.socketTask = wx.connectSocket(options)

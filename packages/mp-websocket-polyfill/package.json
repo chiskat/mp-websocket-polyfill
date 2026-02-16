@@ -2,13 +2,16 @@
   "name": "mp-websocket-polyfill",
   "version": "0.3.0",
   "description": "Let WebSocket in WeChat miniprogram to adapt browser's lib.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "typings": "lib/index.d.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./text-codec-polyfill": "./src/text-codec-polyfill/index.ts"
+  },
   "scripts": {
-    "build": "node ./scripts/build.js",
-    "prepublishOnly": "pnpm run build"
+    "build": "rollup -c",
+    "prepublishOnly": "pnpm run build",
+    "format": "prettier --list-different \"src/**/*.ts\"",
+    "lint": "eslint \"./src/**/*.ts\"",
+    "check-types": "tsc --noEmit"
   },
   "keywords": [
     "miniprogram",
@@ -16,20 +19,47 @@
     "websocket",
     "stomp"
   ],
-  "bugs": {
-    "url": "https://github.com/jia-niang/mp-websocket-polyfill/issues"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jia-niang/mp-websocket-polyfill"
+    "url": "https://github.com/chiskat/mp-websocket-polyfill",
+    "directory": "packages/mp-websocket-polyfill"
   },
-  "author": "jia-niang <1@paperplane.cc>",
+  "bugs": {
+    "url": "https://github.com/chiskat/mp-websocket-polyfill/issues"
+  },
+  "author": "chiskat <1@paperplane.cc>",
   "license": "MIT",
   "devDependencies": {
-    "@types/wechat-miniprogram": "^3.0.0"
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-typescript": "^12.3.0",
+    "@types/fastestsmallesttextencoderdecoder": "^1.0.2",
+    "@types/wechat-miniprogram": "^3.0.0",
+    "fastestsmallesttextencoderdecoder": "^1.0.22",
+    "rollup": "^4.57.1",
+    "rollup-plugin-delete": "^3.0.2",
+    "rollup-plugin-dts": "^6.3.0"
   },
   "files": [
-    "es/**",
-    "lib/**"
-  ]
+    "dist/**"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true,
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.esm.js",
+    "typings": "dist/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.esm.js",
+        "require": "./dist/index.cjs.js"
+      },
+      "./text-codec-polyfill": {
+        "types": "./dist/text-codec-polyfill/index.d.ts",
+        "import": "./dist/text-codec-polyfill/index.esm.js",
+        "require": "./dist/text-codec-polyfill/index.cjs.js"
+      }
+    }
+  }
 }
